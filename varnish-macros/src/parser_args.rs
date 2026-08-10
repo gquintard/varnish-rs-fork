@@ -62,7 +62,9 @@ impl ParamTypeInfo {
         match arg {
             FnArg::Receiver(recv) => match status.func_type {
                 Method => {
-                    if idx != 0 || recv.reference.is_none() || recv.mutability.is_some() {
+                    let is_plain_ref =
+                        matches!(&recv.kind, syn::ReceiverKind::Reference(_, _, None));
+                    if idx != 0 || !is_plain_ref {
                         Err(error(&recv, "First method arg must be `&self`"))?;
                     }
                     Ok(Self {

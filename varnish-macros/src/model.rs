@@ -1,6 +1,11 @@
 //! The data model is the validated result of parsing user code.
 //! Once fully parsed and vetted, the data model is used to generate the Varnish VMOD code.
 
+// darling 0.24's `FromMeta` codegen for an `Option<T>` field emits a
+// `_darling::export::Option<T>` declaration in a module-level anonymous const,
+// which trips `unused_qualifications`; item-level `#[allow]` can't reach it.
+#![allow(unused_qualifications)]
+
 use std::iter::once;
 
 use darling::FromMeta;
