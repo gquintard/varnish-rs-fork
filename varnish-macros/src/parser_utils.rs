@@ -117,7 +117,7 @@ pub fn as_slice_ty(ty: &Type) -> Option<&Type> {
 
 /// Try to get the ident of a simple type, or return None if it's not a simple type.
 pub fn as_simple_ty(ty: &Type) -> Option<&Ident> {
-    if let Path(TypePath { qself: None, path }) = ty {
+    if let Path(TypePath { qself: None, path, .. }) = ty {
         path.get_ident()
     } else {
         None

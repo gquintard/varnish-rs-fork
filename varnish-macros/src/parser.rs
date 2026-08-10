@@ -338,7 +338,7 @@ impl FuncInfo {
             |arg| matches!(&arg.ty, ParamType::Value(v) if matches!(v.kind, ParamKind::Optional)),
         );
 
-        let is_unsafe = signature.unsafety.is_some();
+        let is_unsafe = matches!(signature.safety, syn::Safety::Unsafe(_));
         let out_vcl = output_ty.requires_unsafe();
         if is_unsafe && !out_vcl {
             errors.add(signature, "functions and methods must not be tagged as `unsafe` unless they return a VCL_* type");
