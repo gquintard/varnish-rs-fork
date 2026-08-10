@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.2](https://github.com/varnish-rs/varnish-rs/compare/varnish-sys-v0.7.1...varnish-sys-v0.7.2) - 2026-08-10
+
+### Added
+
+- Add Ctx::req_body/req_body_state for reading bereq's/req's body ([#305](https://github.com/varnish-rs/varnish-rs/pull/305))
+- Add probe support to NativeBackendBuilder ([#310](https://github.com/varnish-rs/varnish-rs/pull/310))
+
+### Fixed
+
+- Fix build against syn 3 / darling 0.24 / prettyplease 0.3 ([#313](https://github.com/varnish-rs/varnish-rs/pull/313))
+
 ## [0.7.1](https://github.com/varnish-rs/varnish-rs/compare/varnish-sys-v0.7.0...varnish-sys-v0.7.1)
 
 ### Other
