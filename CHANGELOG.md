@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Ctx::req_body/req_body_state for reading bereq's/req's body ([#305](https://github.com/varnish-rs/varnish-rs/pull/305))
 - Add probe support to NativeBackendBuilder ([#310](https://github.com/varnish-rs/varnish-rs/pull/310))
 
+### Fixed
+
+- Fix build against syn 3 / darling 0.24 / prettyplease 0.3 ([#313](https://github.com/varnish-rs/varnish-rs/pull/313))
+
 ## [0.7.1](https://github.com/varnish-rs/varnish-rs/compare/varnish-sys-v0.7.0...varnish-sys-v0.7.1)
 
 ### Other
