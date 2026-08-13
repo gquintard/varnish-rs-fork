@@ -129,7 +129,11 @@ fn write_function(
     if user_args.iter().any(|(arg, _)| !arg.docs.is_empty()) {
         ln!(docs, "");
         for (arg, ty) in &user_args {
-            wrt!(docs, "* `{}`:", bracketed_name(arg, ty));
+            wrt!(docs, "* `{} {}`", ty.ty_info.to_vcc_type(), arg.ident);
+            if matches!(ty.kind, ParamKind::Optional) {
+                wrt!(docs, " (optional)");
+            }
+            wrt!(docs, ":");
             if arg.docs.is_empty() {
                 ln!(docs, "");
             } else {

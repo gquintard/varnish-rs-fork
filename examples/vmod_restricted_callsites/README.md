@@ -25,16 +25,24 @@ import restricted_callsites from "path/to/librestricted_callsites.so";
 
 ### Function `INT restricted_callsites.client_only()`
 
+**Restricted to:** `client`
+
 Only callable from client-side VCL subs (`vcl_recv`, `vcl_pass`, `vcl_hash`, etc.)
 
 ### Function `INT restricted_callsites.backend_only()`
+
+**Restricted to:** `backend`
 
 Only callable from backend-side VCL subs (`vcl_backend_fetch`, `vcl_backend_response`, etc.)
 
 ### Function `INT restricted_callsites.recv_or_hash()`
 
+**Restricted to:** `vcl_recv`, `vcl_hash`
+
 Only callable from `vcl_recv` and `vcl_hash`
 
 ### Function `INT restricted_callsites.client_or_backend()`
+
+**Restricted to:** `client`, `backend`
 
 Callable from both client and backend contexts
