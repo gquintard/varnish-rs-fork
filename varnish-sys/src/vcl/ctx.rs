@@ -7,8 +7,9 @@ use std::net::SocketAddr;
 use crate::ffi;
 use crate::ffi::{vrt_ctx, VRT_call, VRT_check_call, VRT_fail, VRT_handled, VRT_CTX_MAGIC};
 use crate::vcl::{
-    sc_to_ptr, subroutine::Subroutine, Acl, HttpHeaders, LogTag, StreamClose, TestWS, VclError,
-    VclResult, Workspace,
+    sc_to_ptr,
+    subroutine::{Id, Subroutine},
+    Acl, HttpHeaders, LogTag, StreamClose, TestWS, VclError, VclResult, Workspace,
 };
 
 /// VCL context
@@ -276,6 +277,16 @@ impl<'a> Ctx<'a> {
     /// in a VCL error.
     pub fn is_handled(&self) -> bool {
         unsafe { VRT_handled(self.raw) != 0 }
+    }
+
+    /// Return the VCL subroutine currently executing in this context.
+    ///
+    /// # Panics
+    /// Panics if `ctx.raw.method` doesn't match any known subroutine.
+    /// Every real `vrt_ctx` must be stamped with exactly one method bit while a subroutine body runs.
+    pub fn subroutine(&self) -> Id {
+        Id::from_bitfield(self.raw.method)
+            .expect("vrt_ctx.method must match a known VCL subroutine")
     }
 
     /// Retrieve the cached request body as a list of byte slices.
@@ -648,6 +659,14 @@ mod tests {
     fn ctx_test() {
         let mut test_ctx = TestCtx::new(100);
         test_ctx.ctx();
+    }
+
+    #[test]
+    fn subroutine_returns_current_method() {
+        let mut test_ctx = TestCtx::new(100);
+        test_ctx.vrt_ctx.method = Id::Recv.to_bitfield();
+        let ctx = test_ctx.ctx();
+        assert_eq!(ctx.subroutine(), Id::Recv);
     }
 }
 
