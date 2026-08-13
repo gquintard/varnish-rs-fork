@@ -12,7 +12,7 @@ VmodInfo {
             func_type: Function,
             ident: "client_only",
             vcl_name: None,
-            docs: "",
+            docs: "Only callable from client-side VCL subroutines.",
             has_optional_args: false,
             args: [],
             output_ty: ParamType(

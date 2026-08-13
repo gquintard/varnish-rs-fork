@@ -22,14 +22,30 @@ import restrict_scopes from "path/to/librestrict_scopes.so";
 
 ### Function `INT restrict_scopes.client_only()`
 
+**Restricted to:** `client`
+
+Only callable from client-side VCL subroutines.
+
 ### Function `INT restrict_scopes.backend_only()`
+
+**Restricted to:** `backend`
 
 ### Function `INT restrict_scopes.housekeeping_only()`
 
+**Restricted to:** `housekeeping`
+
 ### Function `INT restrict_scopes.client_or_backend()`
+
+**Restricted to:** `client`, `backend`
 
 ### Function `INT restrict_scopes.recv_only()`
 
+**Restricted to:** `vcl_recv`
+
 ### Function `INT restrict_scopes.recv_or_hash()`
 
+**Restricted to:** `vcl_recv`, `vcl_hash`
+
 ### Function `INT restrict_scopes.backend_subs()`
+
+**Restricted to:** `vcl_backend_fetch`, `vcl_backend_response`, `vcl_backend_error`

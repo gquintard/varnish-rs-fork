@@ -122,6 +122,7 @@ fn write_function(
         );
     }
 
+    write_restrict_note(docs, &func.restrict);
     write_docs(docs, &func.docs, prefix);
 
     // List of arguments are printed only if any of them have documentation
@@ -135,6 +136,19 @@ fn write_function(
                 write_docs(docs, &arg.docs, prefix);
             }
         }
+    }
+}
+
+/// Print a note listing the VCL subroutine scopes a `#[restrict(...)]`-decorated
+/// function is limited to, if any.
+fn write_restrict_note(docs: &mut String, restrict: &[String]) {
+    if !restrict.is_empty() {
+        let scopes = restrict
+            .iter()
+            .map(|s| format!("`{s}`"))
+            .collect::<Vec<_>>()
+            .join(", ");
+        ln!(docs, "\n**Restricted to:** {scopes}");
     }
 }
 
