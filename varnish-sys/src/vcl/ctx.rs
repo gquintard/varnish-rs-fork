@@ -567,8 +567,6 @@ impl<'a> Ctx<'a> {
     /// Panics if `specific` is null or isn't a VSB even though the
     /// subroutine check passed — that would mean the crate's understanding
     /// of Varnish's contract is wrong, not a recoverable misuse by the caller.
-    /// Also inherits [`Ctx::subroutine`]'s panic if `ctx.raw.method` itself
-    /// doesn't match any known subroutine.
     pub fn response_buffer(&mut self) -> VclResult<Buffer<'_>> {
         match self.subroutine() {
             Id::Synth | Id::BackendError => {
