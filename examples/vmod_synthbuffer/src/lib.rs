@@ -13,7 +13,7 @@ mod synthbuffer {
         let mut buf = ctx
             .response_buffer()
             .expect("push is #[restrict]-ed to vcl_synth/vcl_backend_error");
-        let _ = buf.write(&s);
+        buf.write(&s).expect("VSB write must succeed");
     }
 
     /// Push `s` onto the response body, with its bytes in reverse order.
@@ -23,7 +23,7 @@ mod synthbuffer {
             .response_buffer()
             .expect("push_reverse is #[restrict]-ed to vcl_synth/vcl_backend_error");
         for &byte in s.as_bytes().iter().rev() {
-            let _ = buf.write(&[byte]);
+            buf.write(&[byte]).expect("VSB write must succeed");
         }
     }
 }

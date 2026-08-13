@@ -567,6 +567,8 @@ impl<'a> Ctx<'a> {
     /// Panics if `specific` is null or isn't a VSB even though the
     /// subroutine check passed — that would mean the crate's understanding
     /// of Varnish's contract is wrong, not a recoverable misuse by the caller.
+    /// Also inherits [`Ctx::subroutine`]'s panic if `ctx.raw.method` itself
+    /// doesn't match any known subroutine.
     pub fn response_buffer(&mut self) -> VclResult<Buffer<'_>> {
         match self.subroutine() {
             Id::Synth | Id::BackendError => {
@@ -702,6 +704,23 @@ mod tests {
         let mut ctx = test_ctx.ctx();
         assert_eq!(ctx.subroutine(), Id::Recv);
         assert!(ctx.response_buffer().is_err());
+    }
+
+    #[test]
+    fn response_buffer_in_vcl_synth_ok() {
+        let mut test_ctx = TestCtx::new(100);
+        test_ctx.vrt_ctx.method = Id::Synth.to_bitfield();
+        let mut vsb = unsafe { ffi::VSB_new_auto() };
+        test_ctx.vrt_ctx.specific = vsb.cast::<c_void>();
+
+        let mut ctx = test_ctx.ctx();
+        let mut buf = ctx
+            .response_buffer()
+            .expect("response_buffer should succeed in vcl_synth");
+        assert_eq!(buf.raw.magic, ffi::VSB_MAGIC);
+        buf.write(&"hello").expect("VSB write should succeed");
+
+        unsafe { ffi::VSB_destroy(&raw mut vsb) };
     }
 }
 
