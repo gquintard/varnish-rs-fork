@@ -16,6 +16,7 @@ This is a small collection of vmods, written using the [varnish crate](https://c
 - [vmod_counters](vmod_counters): expose custom Varnish statistics counters
 - [vmod_blobutils](vmod_blobutils): work with `VCL_BLOB` arguments
 - [vmod_vdp](vmod_vdp) and [vmod_vfp](vmod_vfp): inject Fetch/Delivery processor to modify response body content
+- [vmod_synthbuffer](vmod_synthbuffer): write directly into the response body VSB from `vcl_synth`/`vcl_backend_error` via `Ctx::response_buffer()`
 - [stat_tree](stat_tree): display Varnish statistics as a hierarchical tree (standalone binary, not a vmod)
 
 Note that you can also use [vmod-rs-example](https://github.com/varnish-rs/vmod-rs-example) for a stand-alone, out-of-tree vmod starting point.

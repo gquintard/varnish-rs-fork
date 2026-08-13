@@ -9,7 +9,7 @@ use crate::ffi::{vrt_ctx, VRT_call, VRT_check_call, VRT_fail, VRT_handled, VRT_C
 use crate::vcl::{
     sc_to_ptr,
     subroutine::{Id, Subroutine},
-    Acl, HttpHeaders, LogTag, StreamClose, TestWS, VclError, VclResult, Workspace,
+    Acl, Buffer, HttpHeaders, LogTag, StreamClose, TestWS, VclError, VclResult, Workspace,
 };
 
 /// VCL context
@@ -551,6 +551,32 @@ impl<'a> Ctx<'a> {
     pub fn req_mut(&mut self) -> Option<&mut Req<'a>> {
         self.req.as_mut()
     }
+
+    /// Return the VSB used to build the response body, so it can be written
+    /// to directly (e.g. via [`Buffer::write`]).
+    ///
+    /// Valid when called from `vcl_synth` or `vcl_backend_error` — per
+    /// `vrt.h`'s comment on `specific` (`synth+error: struct vsb *`), those
+    /// are the only two subroutines where Varnish points `ctx.specific` at a
+    /// `struct vsb *`: building a synthetic response body (`vcl_synth`) or a
+    /// backend error page (`vcl_backend_error`).
+    ///
+    /// Returns `Err` if called from any other subroutine.
+    ///
+    /// # Panics
+    /// Panics if `specific` is null or isn't a VSB even though the
+    /// subroutine check passed — that would mean the crate's understanding
+    /// of Varnish's contract is wrong, not a recoverable misuse by the caller.
+    pub fn response_buffer(&mut self) -> VclResult<Buffer<'_>> {
+        match self.subroutine() {
+            Id::Synth | Id::BackendError => {
+                Ok(Buffer::from_ptr(self.raw.specific.cast::<ffi::vsb>()))
+            }
+            _ => Err(
+                "ctx.response_buffer() is only available in vcl_synth or vcl_backend_error".into(),
+            ),
+        }
+    }
 }
 
 /// Rust proxy for the C `req` struct.
@@ -667,6 +693,32 @@ mod tests {
         test_ctx.vrt_ctx.method = Id::Recv.to_bitfield();
         let ctx = test_ctx.ctx();
         assert_eq!(ctx.subroutine(), Id::Recv);
+    }
+
+    #[test]
+    fn response_buffer_outside_synth_errs() {
+        let mut test_ctx = TestCtx::new(100);
+        test_ctx.vrt_ctx.method = Id::Recv.to_bitfield();
+        let mut ctx = test_ctx.ctx();
+        assert_eq!(ctx.subroutine(), Id::Recv);
+        assert!(ctx.response_buffer().is_err());
+    }
+
+    #[test]
+    fn response_buffer_in_vcl_synth_ok() {
+        let mut test_ctx = TestCtx::new(100);
+        test_ctx.vrt_ctx.method = Id::Synth.to_bitfield();
+        let mut vsb = unsafe { ffi::VSB_new_auto() };
+        test_ctx.vrt_ctx.specific = vsb.cast::<c_void>();
+
+        let mut ctx = test_ctx.ctx();
+        let mut buf = ctx
+            .response_buffer()
+            .expect("response_buffer should succeed in vcl_synth");
+        assert_eq!(buf.raw.magic, ffi::VSB_MAGIC);
+        buf.write(&"hello").expect("VSB write should succeed");
+
+        unsafe { ffi::VSB_destroy(&raw mut vsb) };
     }
 }
 
