@@ -130,7 +130,7 @@ VmodInfo {
             args: [
                 ParamTypeInfo {
                     ident: "_v",
-                    docs: "",
+                    docs: "Flag with a default value.",
                     ty: Value(
                         ParamInfo {
                             kind: Regular,
@@ -805,7 +805,7 @@ VmodInfo {
             args: [
                 ParamTypeInfo {
                     ident: "_v",
-                    docs: "",
+                    docs: "String with a default value.",
                     ty: Value(
                         ParamInfo {
                             kind: Regular,

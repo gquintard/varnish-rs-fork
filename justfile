@@ -332,7 +332,7 @@ install-varnish version=default_varnish_ver debug='':
              apt-get update -qqq; \
         sudo DEBIAN_FRONTEND=noninteractive \
              DEBCONF_NONINTERACTIVE_SEEN=true \
-             apt-get install -qqq autoconf automake flex libtool python3-sphinx libpcre2-dev libedit-dev libssl-dev
+             apt-get install -qqq autoconf automake bison flex libtool python3-sphinx libpcre2-dev libedit-dev libssl-dev
         git clone --depth=1 --recursive https://github.com/varnish/varnish.git /tmp/varnish-src
         cd /tmp/varnish-src
         ./autogen.des --prefix="$INSTALL_DIR" --mandir="$INSTALL_DIR/man"

@@ -191,7 +191,7 @@ mod restrict_scopes {
         pub static Vmod_restrict_scopes_Data: vmod_data = vmod_data {
             vrt_major: 0,
             vrt_minor: 0,
-            file_id: c"914e0ff7ce24091c035bd84a2876f3cb5dcddf49fcecc8d25a9424e194391ee3"
+            file_id: c"776ba51c758eea75219a10903fd4c86c6b8d9d9ac226d6c856ced2dbff5bf420"
                 .as_ptr(),
             name: c"restrict_scopes".as_ptr(),
             func_name: c"Vmod_vmod_restrict_scopes_Func".as_ptr(),
@@ -205,6 +205,7 @@ mod restrict_scopes {
         };
         const JSON: &CStr = c"(moved to @json.snap files)";
     }
+    /// Only callable from client-side VCL subroutines.
     pub fn client_only() -> i64 {
         1
     }

@@ -23,8 +23,12 @@ import synthbuffer from "path/to/libsynthbuffer.so";
 
 ### Function `VOID synthbuffer.push(STRING s)`
 
+**Restricted to:** `vcl_synth`, `vcl_backend_error`
+
 Push `s` onto the response body, unchanged.
 
 ### Function `VOID synthbuffer.push_reverse(STRING s)`
+
+**Restricted to:** `vcl_synth`, `vcl_backend_error`
 
 Push `s` onto the response body, with its bytes in reverse order.

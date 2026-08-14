@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Ctx::subroutine() to expose the currently executing VCL subroutine ([#315](https://github.com/varnish-rs/varnish-rs/pull/315))
 - Add Ctx::response_buffer() to write directly into the vcl_synth/vcl_backend_error response body, plus a vmod_synthbuffer example ([#316](https://github.com/varnish-rs/varnish-rs/pull/316))
 
+### Fixed
+
+- Generate docs for `#[restrict(...)]`-decorated vmod functions, and show `(optional)`/`(optional, default: ...)` for optional and defaulted arguments instead of bracket notation ([#317](https://github.com/varnish-rs/varnish-rs/pull/317))
+
 ## [0.7.2](https://github.com/varnish-rs/varnish-rs/compare/varnish-sys-v0.7.1...varnish-sys-v0.7.2) - 2026-08-10
 
 ### Added

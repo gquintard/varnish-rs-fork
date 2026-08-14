@@ -66,7 +66,7 @@ doctest for `DocStruct` implementation
 
 doctest for `new`
 
-* `[INT cap]`:
+* `INT cap` (optional):
 doc comment for `cap`
 
 ### Method `VOID <object>.function(STRING key)`

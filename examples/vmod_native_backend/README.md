@@ -29,7 +29,7 @@ Example:
 set req.backend_hint = native_backend.create("${server_addr}:${server_port}");
 ```
 
-* `[STRING addr]`:
+* `STRING addr` (optional):
 Socket address string (e.g., "127.0.0.1:8080")
 
 ## Object `DynamicBackend`

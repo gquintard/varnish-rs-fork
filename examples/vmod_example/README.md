@@ -44,7 +44,7 @@ set resp.http.Obvious = example.captain_obvious();
 set resp.http.Obvious-Number = example.captain_obvious(42);
 ```
 
-* `[INT opt]`:
+* `INT opt` (optional):
 Optional number to provide as argument
 
 ### Function `STRING example.hello(STRING s)`

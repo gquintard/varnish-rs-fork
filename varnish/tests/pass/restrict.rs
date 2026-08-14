@@ -4,6 +4,7 @@ fn main() {}
 
 #[vmod]
 mod restrict_scopes {
+    /// Only callable from client-side VCL subroutines.
     #[restrict(client)]
     pub fn client_only() -> i64 {
         1
