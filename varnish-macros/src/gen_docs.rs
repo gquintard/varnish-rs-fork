@@ -130,7 +130,9 @@ fn write_function(
         ln!(docs, "");
         for (arg, ty) in &user_args {
             wrt!(docs, "* `{} {}`", ty.ty_info.to_vcc_type(), arg.ident);
-            if matches!(ty.kind, ParamKind::Optional) {
+            if !ty.default.is_null() {
+                wrt!(docs, " (optional, default: `{}`)", ty.default);
+            } else if matches!(ty.kind, ParamKind::Optional) {
                 wrt!(docs, " (optional)");
             }
             wrt!(docs, ":");

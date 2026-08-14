@@ -32,7 +32,12 @@ mod types {
 
     // bool
     pub fn type_bool(_v: bool) {}
-    pub fn type_bool_dflt(#[default(true)] _v: bool) {}
+    pub fn type_bool_dflt(
+        /// Flag with a default value.
+        #[default(true)]
+        _v: bool,
+    ) {
+    }
     pub fn opt_bool(_v: Option<bool>) {}
     pub fn to_bool() -> bool {
         false
@@ -105,7 +110,12 @@ mod types {
     pub fn type_str(_v: &str) {}
     pub fn opt_str(_v: Option<&str>) {}
     pub fn opt_str_req(#[required] _v: Option<&str>) {}
-    pub fn type_str_dflt(#[default("baz")] _v: &str) {}
+    pub fn type_str_dflt(
+        /// String with a default value.
+        #[default("baz")]
+        _v: &str,
+    ) {
+    }
     pub fn opt_str_dflt(#[default("baz")] _v: Option<&str>) {}
     pub fn to_str() -> &'static str {
         ""
