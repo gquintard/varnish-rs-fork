@@ -96,6 +96,11 @@ fn generate_bindings(info: &VarnishInfo) {
         .header("c_code/wrapper.h")
         .blocklist_item("FP_.*")
         .blocklist_item("FILE")
+        // These libc runtime symbols get pulled in transitively from system headers with
+        // ABI-mismatched signatures (e.g. `size_t` params as `c_ulong` instead of `usize`),
+        // which rustc's `suspicious_runtime_symbol_definitions` lint now rejects. We don't
+        // call any of them through these bindings — std already provides them.
+        .blocklist_function("memcpy|memmove|memset|memcmp|strlen|bcmp")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
         .clang_args(info.varnish_paths.iter().map(|i| {
             format!(

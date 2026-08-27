@@ -210,7 +210,7 @@ pub const __STDC_IEC_60559_COMPLEX__: u32 = 201404;
 pub const __STDC_ISO_10646__: u32 = 201706;
 pub const __GNU_LIBRARY__: u32 = 6;
 pub const __GLIBC__: u32 = 2;
-pub const __GLIBC_MINOR__: u32 = 43;
+pub const __GLIBC_MINOR__: u32 = 44;
 pub const _SYS_CDEFS_H: u32 = 1;
 pub const __glibc_c99_flexarr_available: u32 = 1;
 pub const __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI: u32 = 0;
@@ -727,6 +727,7 @@ pub const EPROTO: u32 = 71;
 pub const EMULTIHOP: u32 = 72;
 pub const EDOTDOT: u32 = 73;
 pub const EBADMSG: u32 = 74;
+pub const EFSBADCRC: u32 = 74;
 pub const EOVERFLOW: u32 = 75;
 pub const ENOTUNIQ: u32 = 76;
 pub const EBADFD: u32 = 77;
@@ -770,6 +771,7 @@ pub const EALREADY: u32 = 114;
 pub const EINPROGRESS: u32 = 115;
 pub const ESTALE: u32 = 116;
 pub const EUCLEAN: u32 = 117;
+pub const EFSCORRUPTED: u32 = 117;
 pub const ENOTNAM: u32 = 118;
 pub const ENAVAIL: u32 = 119;
 pub const EISNAM: u32 = 120;
@@ -786,6 +788,7 @@ pub const EOWNERDEAD: u32 = 130;
 pub const ENOTRECOVERABLE: u32 = 131;
 pub const ERFKILL: u32 = 132;
 pub const EHWPOISON: u32 = 133;
+pub const EFTYPE: u32 = 134;
 pub const ENOTSUP: u32 = 95;
 pub const VSPLAY_NEGINF: i32 = -1;
 pub const VSPLAY_INF: u32 = 1;
@@ -1420,7 +1423,7 @@ pub struct __pthread_mutex_s {
     pub __nusers: ::std::ffi::c_uint,
     pub __kind: ::std::ffi::c_int,
     pub __spins: ::std::ffi::c_short,
-    pub __unused: ::std::ffi::c_short,
+    pub __glibc_reserved: ::std::ffi::c_short,
     pub __list: __pthread_list_t,
 }
 #[allow(clippy::unnecessary_operation, clippy::identity_op)]
@@ -1439,8 +1442,8 @@ const _: () = {
         [::std::mem::offset_of!(__pthread_mutex_s, __kind) - 16usize];
     ["Offset of field: __pthread_mutex_s::__spins"]
         [::std::mem::offset_of!(__pthread_mutex_s, __spins) - 20usize];
-    ["Offset of field: __pthread_mutex_s::__unused"]
-        [::std::mem::offset_of!(__pthread_mutex_s, __unused) - 22usize];
+    ["Offset of field: __pthread_mutex_s::__glibc_reserved"]
+        [::std::mem::offset_of!(__pthread_mutex_s, __glibc_reserved) - 22usize];
     ["Offset of field: __pthread_mutex_s::__list"]
         [::std::mem::offset_of!(__pthread_mutex_s, __list) - 24usize];
 };
@@ -2132,30 +2135,9 @@ unsafe extern "C" {
     pub fn isfdtype(__fd: ::std::ffi::c_int, __fdtype: ::std::ffi::c_int) -> ::std::ffi::c_int;
 }
 unsafe extern "C" {
-    pub fn memcpy(
-        __dest: *mut ::std::ffi::c_void,
-        __src: *const ::std::ffi::c_void,
-        __n: ::std::ffi::c_ulong,
-    ) -> *mut ::std::ffi::c_void;
-}
-unsafe extern "C" {
-    pub fn memmove(
-        __dest: *mut ::std::ffi::c_void,
-        __src: *const ::std::ffi::c_void,
-        __n: ::std::ffi::c_ulong,
-    ) -> *mut ::std::ffi::c_void;
-}
-unsafe extern "C" {
     pub fn memccpy(
         __dest: *mut ::std::ffi::c_void,
         __src: *const ::std::ffi::c_void,
-        __c: ::std::ffi::c_int,
-        __n: ::std::ffi::c_ulong,
-    ) -> *mut ::std::ffi::c_void;
-}
-unsafe extern "C" {
-    pub fn memset(
-        __s: *mut ::std::ffi::c_void,
         __c: ::std::ffi::c_int,
         __n: ::std::ffi::c_ulong,
     ) -> *mut ::std::ffi::c_void;
@@ -2166,13 +2148,6 @@ unsafe extern "C" {
         __c: ::std::ffi::c_int,
         __n: usize,
     ) -> *mut ::std::ffi::c_void;
-}
-unsafe extern "C" {
-    pub fn memcmp(
-        __s1: *const ::std::ffi::c_void,
-        __s2: *const ::std::ffi::c_void,
-        __n: ::std::ffi::c_ulong,
-    ) -> ::std::ffi::c_int;
 }
 unsafe extern "C" {
     pub fn __memcmpeq(
@@ -2390,9 +2365,6 @@ unsafe extern "C" {
     ) -> *mut ::std::ffi::c_void;
 }
 unsafe extern "C" {
-    pub fn strlen(__s: *const ::std::ffi::c_char) -> ::std::ffi::c_ulong;
-}
-unsafe extern "C" {
     pub fn strnlen(__string: *const ::std::ffi::c_char, __maxlen: usize) -> usize;
 }
 unsafe extern "C" {
@@ -2408,13 +2380,6 @@ unsafe extern "C" {
 }
 unsafe extern "C" {
     pub fn strerror_l(__errnum: ::std::ffi::c_int, __l: locale_t) -> *mut ::std::ffi::c_char;
-}
-unsafe extern "C" {
-    pub fn bcmp(
-        __s1: *const ::std::ffi::c_void,
-        __s2: *const ::std::ffi::c_void,
-        __n: ::std::ffi::c_ulong,
-    ) -> ::std::ffi::c_int;
 }
 unsafe extern "C" {
     pub fn bcopy(
