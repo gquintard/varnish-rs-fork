@@ -7,13 +7,13 @@ varnishtest "echo backend: pipe() is refused on TLS client sessions"
 
 shell {
     cat >${tmpdir}/tls.cfg <<-EOF
-	frontend = {
-	    host = "${localhost}"
-	    port = "0"
-	    name = "tls0"
-	}
-	pem-file = "${testdir}/example.com.pem"
-	EOF
+    frontend = {
+        host = "${localhost}"
+        port = "0"
+        name = "tls0"
+    }
+    pem-file = "${testdir}/example.com.pem"
+    EOF
 }
 
 server s1 {} -start
